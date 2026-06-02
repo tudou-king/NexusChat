@@ -18,12 +18,6 @@
 
 ---
 
-## 预览截图
-
-![NexusChat 预览](https://raw.githubusercontent.com/tudou-king/NexusChat/main/preview.png)
-
----
-
 ## 项目简介
 
 NexusChat 是一个漂亮的轻量级 AI 聊天界面，**完全在浏览器中运行**。使用你自己的 API Key 连接多个 AI 供应商，无需服务器、无需注册、无需追踪。
@@ -283,7 +277,6 @@ NexusChat/
 ├── index.html              # 主页面
 ├── style.css               # 样式（iOS 暗黑主题）
 ├── app.js                  # 应用逻辑（含 i18n）
-├── preview.png             # 预览截图
 ├── README.md               # 项目说明
 ├── LICENSE                 # MIT 开源协议
 ├── .nojekyll               # GitHub Pages 配置

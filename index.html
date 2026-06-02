@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NexusChat - Multi-Model AI Chat</title>
+  <meta name="description" content="A beautiful, multi-model AI chat interface. Connect to OpenAI, Claude, Gemini, DeepSeek and more. Supports English, Chinese, and Japanese.">
+  <meta name="theme-color" content="#000000">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon">N</div>
+          <span class="logo-text">NexusChat</span>
+        </div>
+        <button id="new-chat-btn" class="btn-new-chat" title="New Chat" data-i18n="newChat">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+      <div id="conversation-list" class="conversation-list"></div>
+      <div class="sidebar-footer">
+        <button id="settings-btn" class="btn-settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span data-i18n="settings">Settings</span>
+        </button>
+      </div>
+    </aside>
+
+    <main id="main" class="main">
+      <header class="header">
+        <button id="sidebar-toggle" class="btn-icon" title="Toggle sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="header-center">
+          <select id="model-select" class="model-select"></select>
+        </div>
+        <div class="header-actions">
+          <select id="lang-select" class="lang-select">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+          </select>
+          <button id="header-settings" class="btn-icon" title="Settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div id="messages" class="messages">
+        <div id="welcome" class="welcome">
+          <div class="welcome-icon">?</div>
+          <h2 data-i18n="welcome">Welcome to NexusChat</h2>
+          <p data-i18n="welcomeDesc">Connect your API key and start chatting with AI models.</p>
+          <div class="welcome-chips">
+            <button class="chip" data-provider="openai">OpenAI</button>
+            <button class="chip" data-provider="openrouter">OpenRouter</button>
+            <button class="chip" data-provider="gemini">Gemini</button>
+            <button class="chip" data-provider="deepseek">DeepSeek</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <div class="input-wrapper">
+          <textarea id="message-input" class="message-input" placeholder="Message NexusChat..." rows="1" enterkeyhint="send" data-i18n-placeholder="messagePlaceholder"></textarea>
+          <button id="send-btn" class="btn-send" disabled title="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+          <button id="stop-btn" class="btn-stop hidden" title="Stop generation">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          </button>
+        </div>
+        <div class="input-footer">
+          <span id="status-text" class="status-text"></span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 data-i18n="settings">Settings</h3>
+        <button id="close-settings" class="btn-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group">
+          <div class="settings-group-title">OpenAI</div>
+          <div class="settings-row">
+            <label data-i18n="apiKey">API Key</label>
+            <input type="password" id="key-openai" class="settings-input" placeholder="sk-...">
+          </div>
+          <div class="settings-row">
+            <label data-i18n="baseUrl">Base URL</label>
+            <input type="text" id="url-openai" class="settings-input" placeholder="https://api.openai.com/v1">
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title">OpenRouter</div>
+          <div class="settings-row">
+            <label data-i18n="apiKey">API Key</label>
+            <input type="password" id="key-openrouter" class="settings-input" placeholder="sk-or-...">
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title">Google Gemini</div>
+          <div class="settings-row">
+            <label data-i18n="apiKey">API Key</label>
+            <input type="password" id="key-gemini" class="settings-input" placeholder="AIza...">
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title">DeepSeek</div>
+          <div class="settings-row">
+            <label data-i18n="apiKey">API Key</label>
+            <input type="password" id="key-deepseek" class="settings-input" placeholder="sk-...">
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-group-title" data-i18n="general">General</div>
+          <div class="settings-row">
+            <label data-i18n="language">Language</label>
+            <select id="settings-lang" class="settings-input">
+              <option value="en">English</option>
+              <option value="zh">中文</option>
+              <option value="ja">日本語</option>
+            </select>
+          </div>
+          <div class="settings-row">
+            <label data-i18n="systemPrompt">System Prompt</label>
+            <textarea id="system-prompt" class="settings-input settings-textarea" placeholder="You are a helpful assistant." rows="3"></textarea>
+          </div>
+          <div class="settings-row">
+            <label data-i18n="temperature">Temperature</label>
+            <div class="settings-range">
+              <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+              <span id="temp-value">0.7</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="context-menu" class="context-menu hidden">
+    <button data-action="rename" data-i18n="rename">Rename</button>
+    <button data-action="delete" class="danger" data-i18n="delete">Delete</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
